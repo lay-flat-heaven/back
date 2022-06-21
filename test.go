@@ -4,15 +4,29 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
+func main() {
 
-func main(){
+	router := gin.Default()
 
+	router.GET("/",func(c *gin.Context) {
+		c.JSON(202,gin.H{
+			"hello":"helllo",
+		})
+	})
+	router.POST("/upload", func(c *gin.Context) {
+	
+		file, _ := c.FormFile("file")
 
-	u := gin.Default()
-	fmt.Print(u)
-	var a *gorm.DB
-	fmt.Print(a)
+		fmt.Println(file.Filename)
+
+		
+		 c.SaveUploadedFile(file, "/home/shinoshina/gocode/src/cback/kk.txt")
+		
+
+		c.String(202, fmt.Sprintf("'%s' uploaded!", file.Filename))
+	})
+	router.Run(":8080")
+
 }
